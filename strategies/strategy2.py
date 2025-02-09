@@ -2,14 +2,14 @@ import requests
 import pandas as pd
 import time
 import numpy as np
-from config import PRODUCT_SYMBOL, BASE_URL
+from config import PRODUCT_SYMBOL, BASE_URL,CANDLE_URL
 from utils.logging_util import log_message
 
-def get_historical_data(symbol, resolution="5m", limit=100):
+def get_historical_data(symbol, resolution="5m", limit=50):
 
     """Fetch historical OHLC data from Delta Exchange."""
 
-    url = f"{BASE_URL}/v2/history/candles"
+    url = f"{CANDLE_URL}"
     headers = {
         'Accept': 'application/json'
     }
@@ -29,8 +29,10 @@ def get_historical_data(symbol, resolution="5m", limit=100):
         # log_message(data)
         if data:
             df = pd.DataFrame(data)
-            df["time"] = pd.to_datetime(df["time"], unit="s")
-            df = df[::-1]  
+            # df["time"] = pd.to_datetime(df["time"], unit="s")
+            # df = df[::-1]  
+            df = df.sort_values(by="time", ascending=True).reset_index(drop=True)
+            print("Latest DataFrame:", df.tail(5))
             return df
     return None
 
@@ -60,6 +62,7 @@ def strategy_logic(symbol):
     prev = df.iloc[-2]
     
     entry_price = latest["close"]
+    log_message(latest)
     # log_message(latest['close'])
     # log_message(latest['upper_band'])
     # log_message(latest["middle_band"])
