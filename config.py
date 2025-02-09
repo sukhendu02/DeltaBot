@@ -25,3 +25,7 @@ EMA_SHORT = 9
 EMA_LONG = 21
 SUPER_TREND_PERIOD = 10
 SUPER_TREND_MULTIPLIER = 3
+
+CANDLE_URL="https://api.india.delta.exchange/v2/history/candles"
+
+WEBHOOKURL="https://cdn-ind.testnet.deltaex.org/v2/webhook_alert/27a2507ac348605615d438dac54fbecb"
